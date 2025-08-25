@@ -1,0 +1,100 @@
+@import "tailwindcss";
+/* Custom styles that extend Tailwind */
+
+/* Custom animations */
+@keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Stock ticker animation */
+.ticker {
+    display: inline-block;
+    white-space: nowrap;
+    animation: ticker 30s linear infinite;
+}
+
+.ticker:hover {
+    animation-play-state: paused;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e3a8a;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1e40af;
+}
+
+/* Custom form input focus */
+input:focus, textarea:focus {
+    box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.2);
+}
+
+/* Custom modal transitions */
+.modal-transition {
+    transition: opacity 0.3s ease;
+}
+
+/* Responsive table */
+@media (max-width: 640px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* Chart placeholder styling */
+.chart-placeholder {
+    height: 40px;
+    background: linear-gradient(90deg, #e0e7ff, #93c5fd, #e0e7ff);
+    background-size: 200% 100%;
+    animation: gradient 2s ease infinite;
+    border-radius: 4px;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Custom tooltip */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 120px;
+    background-color: #1e3a8a;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
