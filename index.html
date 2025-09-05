@@ -523,7 +523,7 @@
                 <!-- Access Key -->
                 
                 <input type="hidden" name="subject" value="New Contact Form Submission">
-                <input type="hidden" name="redirect" value="/thank-you.html">
+      
                 
                 <!-- Name Input -->
                 <div class="w-full">
@@ -575,32 +575,66 @@
 </section>
 
 <script>
-// Client-side validation before form submission
-document.getElementById("getCallBackForm").addEventListener("submit", function(e) {
+document.getElementById("getCallBackForm").addEventListener("submit", async function(e) {
+    e.preventDefault(); // 🔴 Stop default redirect
+
     const phoneInput = document.getElementById("getCallBMob");
     const phone = phoneInput.value.trim();
     const errorMsg = document.getElementById("getCBMobileErr");
     const submitBtn = document.getElementById("getCBSubmit");
-    
+
     // Reset error message
     errorMsg.classList.add("hidden");
+    errorMsg.classList.remove("text-green-600", "text-red-600");
 
-    // Validate mobile number (10 digits only)
+    // ✅ Validate mobile number (10 digits only)
     if (!/^\d{10}$/.test(phone)) {
-        e.preventDefault(); // Stop form submission
+        errorMsg.textContent = "Please enter a valid 10-digit mobile number.";
         errorMsg.classList.remove("hidden");
+        errorMsg.classList.add("text-red-600");
         phoneInput.focus();
-        return false;
+        return;
     }
-    
-    // Show loading state (optional visual feedback)
+
+    // Show loading state
     submitBtn.innerHTML = "Submitting...";
     submitBtn.disabled = true;
-    
-    // Form will submit naturally to Web3Forms
-    return true;
+
+    const form = e.target;
+    const data = new FormData(form);
+
+    try {
+        const response = await fetch(form.action, {
+            method: form.method,
+            body: data,
+            headers: { "Accept": "application/json" }
+        });
+
+        if (response.ok) {
+            // ✅ Success
+            errorMsg.textContent = "✅ Thank you! We'll call you back soon.";
+            errorMsg.classList.remove("hidden");
+            errorMsg.classList.add("text-green-600");
+            form.reset();
+        } else {
+            // ❌ Error
+            errorMsg.textContent = "Something went wrong. Please try again.";
+            errorMsg.classList.remove("hidden");
+            errorMsg.classList.add("text-red-600");
+        }
+    } catch (err) {
+        // ⚠️ Network error
+        errorMsg.textContent = "Network error. Please check your connection.";
+        errorMsg.classList.remove("hidden");
+        errorMsg.classList.add("text-red-600");
+    }
+
+    // Reset button state
+    submitBtn.innerHTML = "GET CALL BACK";
+    submitBtn.disabled = false;
 });
 </script>
+
 
   <!-- Footer-->
   <footer class="bg-gray-800 text-white">
